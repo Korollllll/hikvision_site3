@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="images/cam_icon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Інструкція — Hikvision</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/instruction.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-hik">HIK</span><span class="logo-sep">|</span><span class="logo-inst">інструкції</span>
+    </a>
+    <div class="nav-status">
+      <div class="nav-signal"><span class="dot"></span>SYSTEM ONLINE</div>
+    </div>
+     <button class="btn-suggest" onclick="openSuggest()">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+  <span class="btn-suggest-full">Запропонувати камеру</span>
+  <span class="btn-suggest-short">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    камеру
+  </span>
+</button>
+    <button class="burger" id="burgerBtn" aria-label="Меню"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Головна</a></li>
+      <li><a href="catalog.html">Каталог</a></li>
+      <li><a href="about.html">Про сайт</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-topbar">
+      <div class="modal-dots"><span></span><span></span><span></span></div>
+      <span class="modal-title">suggest_camera.exe</span>
+      <button class="modal-close" onclick="closeSuggest()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-header">
+        <div class="section-label" style="margin-bottom:10px;">Запит</div>
+        <h2>Запропонувати камеру</h2>
+        <p>Якої камери Hikvision не вистачає? Заповніть форму — ми розглянемо та додамо інструкцію.</p>
+      </div>
+      <form class="suggest-form" id="suggestForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="s-name">Ваше імʼя <span class="req">*</span></label>
+            <input type="text" id="s-name" placeholder="Тимофій" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="s-contact">Email <span class="req">*</span></label>
+            <input type="text" id="s-contact" placeholder="example@email.com" required autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="s-model">Модель камери <span class="req">*</span></label>
+          <input type="text" id="s-model" placeholder="DS-2CD2T47G2-L або інша" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="s-series">Серія</label>
+          <select id="s-series">
+            <option value="">— Оберіть серію —</option>
+            <option value="AcuSense">AcuSense</option>
+            <option value="ColorVu">ColorVu</option>
+            <option value="DarkFighter">DarkFighter</option>
+            <option value="EasyIP">EasyIP</option>
+            <option value="Інша">Інша</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="s-comment">Коментар</label>
+          <textarea id="s-comment" rows="3" placeholder="Чому ця камера важлива, де використовується..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" onclick="closeSuggest()">Скасувати</button>
+          <button type="submit" class="btn-primary">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Надіслати
+          </button>
+        </div>
+      </form>
+      <div class="suggest-success" id="suggestSuccess" style="display:none">
+        <div class="success-icon">✓</div>
+        <h3>Запит надіслано!</h3>
+        <p>Дякуємо! Ми розглянемо вашу пропозицію та додамо інструкцію для цієї камери.</p>
+        <button class="btn-primary" onclick="closeSuggest()" style="margin-top:24px;">Закрити</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div id="loadingState" class="loading-state">
+    <div class="spinner"></div>
+    <p>// LOADING INSTRUCTION...</p>
+  </div>
+
+  <div id="instructionContent" style="display:none">
+    <div class="cam-info-bar">
+      <div class="container cam-info-inner">
+        <a href="catalog.html" class="back-link">← До каталогу</a>
+        <div class="cam-meta">
+          <img id="camImage" src="" alt="" class="cam-thumb">
+          <div>
+            <h1 id="camName" class="cam-name"></h1>
+            <div class="cam-tags">
+              <span id="camSeries" class="tag tag-series"></span>
+              <span id="camType" class="tag tag-type"></span>
+              <span id="camRes" class="tag tag-res"></span>
+            </div>
+          </div>
+        </div>
+        <div class="cam-specs" id="camSpecs"></div>
+      </div>
+    </div>
+
+    <div class="level-bar">
+      <div class="container level-inner">
+        <span class="level-label">// РІВЕНЬ:</span>
+        <div class="level-btns">
+          <button class="level-btn active" id="btnBeginner" onclick="switchLevel('beginner')">Початківець</button>
+          <button class="level-btn" id="btnExpert" onclick="switchLevel('expert')">Фахівець</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="container">
+        <div class="progress-info">
+          <span id="stepLabel">КРОК 1</span>
+          <span id="stepCount"></span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+    </div>
+
+    <div class="step-area container">
+      <div class="step-card">
+        <div class="step-img-wrap">
+          <div class="step-img-placeholder" id="stepImgPlaceholder">
+            <div class="photo-placeholder" style="height:260px;">
+              <div class="ph-corner-tl"></div>
+              <div class="ph-corner-br"></div>
+              <div class="ph-icon">🔧</div>
+              <div class="ph-label">
+                Ілюстрація кроку
+                <span class="ph-size">step-placeholder.svg</span>
+              </div>
+            </div>
+          </div>
+          <img id="stepImage" src="" alt="Ілюстрація кроку" class="step-img" style="display:none;">
+        </div>
+        <div class="step-body">
+          <span class="step-number" id="stepNumber"></span>
+          <h2 class="step-title" id="stepTitle"></h2>
+          <p class="step-desc" id="stepDesc"></p>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="nav-btn" id="prevBtn" onclick="prevStep()">← Попередній</button>
+        <button class="nav-btn nav-btn-next" id="nextBtn" onclick="nextStep()">Наступний →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="errorState" style="display:none" class="error-state">
+    <p>// ERROR: Камеру не знайдено. <a href="catalog.html">Повернутись до каталогу</a></p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="index.html" class="footer-logo">
+        <span class="logo-hik">HIK</span><span class="logo-inst"> інструкції</span>
+      </a>
+      <span class="footer-copy">© 2026 Hikvision Інструкції · Viatec</span>
+      <div class="footer-status"><span class="status-dot"></span>SYSTEM ONLINE · v1.0.0</div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/instruction.js"></script>
+<script src="js/suggest.js"></script>
+</body>
+</html>

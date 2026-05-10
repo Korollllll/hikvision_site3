@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="images/cam_icon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Про сайт — Hikvision Інструкції</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/about.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-hik">HIK</span><span class="logo-sep">|</span><span class="logo-inst">інструкції</span>
+    </a>
+    <div class="nav-status">
+      <div class="nav-signal"><span class="dot"></span>SYSTEM ONLINE</div>
+    </div>
+     <button class="btn-suggest" onclick="openSuggest()">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+  <span class="btn-suggest-full">Запропонувати камеру</span>
+  <span class="btn-suggest-short">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    камеру
+  </span>
+</button>
+    <button class="burger" id="burgerBtn" aria-label="Меню"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Головна</a></li>
+      <li><a href="catalog.html">Каталог</a></li>
+      <li><a href="about.html" class="active">Про сайт</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-topbar">
+      <div class="modal-dots"><span></span><span></span><span></span></div>
+      <span class="modal-title">suggest_camera.exe</span>
+      <button class="modal-close" onclick="closeSuggest()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-header">
+        <div class="section-label" style="margin-bottom:10px;">Запит</div>
+        <h2>Запропонувати камеру</h2>
+        <p>Якої камери Hikvision не вистачає? Заповніть форму — ми розглянемо та додамо інструкцію.</p>
+      </div>
+      <form class="suggest-form" id="suggestForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="s-name">Ваше імʼя <span class="req">*</span></label>
+            <input type="text" id="s-name" placeholder="Тимофій" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="s-contact">Email <span class="req">*</span></label>
+            <input type="text" id="s-contact" placeholder="example@email.com" required autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="s-model">Модель камери <span class="req">*</span></label>
+          <input type="text" id="s-model" placeholder="DS-2CD2T47G2-L або інша" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="s-series">Серія</label>
+          <select id="s-series">
+            <option value="">— Оберіть серію —</option>
+            <option value="AcuSense">AcuSense</option>
+            <option value="ColorVu">ColorVu</option>
+            <option value="DarkFighter">DarkFighter</option>
+            <option value="EasyIP">EasyIP</option>
+            <option value="Інша">Інша</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="s-comment">Коментар</label>
+          <textarea id="s-comment" rows="3" placeholder="Чому ця камера важлива, де використовується..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" onclick="closeSuggest()">Скасувати</button>
+          <button type="submit" class="btn-primary">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Надіслати
+          </button>
+        </div>
+      </form>
+      <div class="suggest-success" id="suggestSuccess" style="display:none">
+        <div class="success-icon">✓</div>
+        <h3>Запит надіслано!</h3>
+        <p>Дякуємо! Ми розглянемо вашу пропозицію та додамо інструкцію для цієї камери.</p>
+        <button class="btn-primary" onclick="closeSuggest()" style="margin-top:24px;">Закрити</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="about-header">
+    <div class="about-header-bg"></div>
+    <div class="container">
+      <div class="section-label">Документація</div>
+      <h1>Про цей сайт</h1>
+    </div>
+  </div>
+
+  <div class="container about-content">
+
+    <div class="about-block">
+      <h2>Призначення</h2>
+      <p>Цей веб-сайт створено як дипломний проект для представлення інтерактивних покрокових інструкцій з монтажу та базового налаштування IP-камер Hikvision. Ресурс орієнтований на два типи користувачів: технічних фахівців і початківців — нових співробітників компаній, що працюють із системами безпеки.</p>
+    </div>
+
+    <!-- Photo banner placeholder -->
+    <div class="about-photo-banner">
+  <img src="images/hikvision-banner.jpg" alt="Hikvision камери">
+</div>
+
+    <div class="about-block">
+      <h2>Технічний стек</h2>
+      <div class="tech-list">
+        <div class="tech-item">
+          <span class="tech-icon">🔷</span>
+          <div><strong>HTML5</strong><span>Семантична структура сторінок</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="tech-icon">🎨</span>
+          <div><strong>CSS3</strong><span>Grid, Flexbox, анімації, адаптивний дизайн</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="tech-icon">⚡</span>
+          <div><strong>JavaScript ES6+</strong><span>Логіка, Fetch API, DOM-маніпуляції</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="tech-icon">📄</span>
+          <div><strong>JSON</strong><span>Зберігання та структурування даних про камери</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="tech-icon">🚀</span>
+          <div><strong>GitHub Pages</strong><span>Хостинг без серверної частини (static)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-block">
+      <h2>Автор</h2>
+      <div class="author-card">
+        <div class="author-avatar">👤</div>
+        <div class="author-info">
+          <strong>Тимофій Король</strong>
+          <span>Студент групи ІНб-2-22-4.0д · Дипломна робота 2026</span>
+          <span style="margin-top:4px; display:block; opacity:0.6;">Науковий керівник: Олексій Валентинович Багацький, к.т.н., ст. досл.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="index.html" class="footer-logo">
+        <span class="logo-hik">HIK</span><span class="logo-inst"> інструкції</span>
+      </a>
+      <span class="footer-copy">© 2026 Hikvision Інструкції · Viatec</span>
+      <div class="footer-status"><span class="status-dot"></span>SYSTEM ONLINE · v1.0.0</div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/suggest.js"></script>
+</body>
+</html>

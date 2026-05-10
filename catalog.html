@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог камер — Hikvision Інструкції</title>
+  <link rel="icon" type="image/svg+xml" href="images/cam_icon.svg">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/catalog.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-hik">HIK</span><span class="logo-sep">|</span><span class="logo-inst">інструкції</span>
+    </a>
+    <div class="nav-status">
+      <div class="nav-signal"><span class="dot"></span>SYSTEM ONLINE</div>
+    </div>
+    <button class="btn-suggest" onclick="openSuggest()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      <span class="btn-suggest-full">Запропонувати камеру</span>
+      <span class="btn-suggest-short">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        камеру
+      </span>
+    </button>
+    <button class="burger" id="burgerBtn" aria-label="Меню"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Головна</a></li>
+      <li><a href="catalog.html" class="active">Каталог</a></li>
+      <li><a href="about.html">Про сайт</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-topbar">
+      <div class="modal-dots"><span></span><span></span><span></span></div>
+      <span class="modal-title">suggest_camera.exe</span>
+      <button class="modal-close" onclick="closeSuggest()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-header">
+        <div class="section-label" style="margin-bottom:10px;">Запит</div>
+        <h2>Запропонувати камеру</h2>
+        <p>Якої камери Hikvision не вистачає? Заповніть форму — ми розглянемо та додамо інструкцію.</p>
+      </div>
+      <form class="suggest-form" id="suggestForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="s-name">Ваше імʼя <span class="req">*</span></label>
+            <input type="text" id="s-name" placeholder="Тимофій" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="s-contact">Email <span class="req">*</span></label>
+            <input type="text" id="s-contact" placeholder="example@email.com" required autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="s-model">Модель камери <span class="req">*</span></label>
+          <input type="text" id="s-model" placeholder="DS-2CD2T47G2-L або інша" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="s-series">Серія</label>
+          <select id="s-series">
+            <option value="">— Оберіть серію —</option>
+            <option value="AcuSense">AcuSense</option>
+            <option value="ColorVu">ColorVu</option>
+            <option value="DarkFighter">DarkFighter</option>
+            <option value="EasyIP">EasyIP</option>
+            <option value="Інша">Інша</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="s-comment">Коментар</label>
+          <textarea id="s-comment" rows="3" placeholder="Чому ця камера важлива, де використовується..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" onclick="closeSuggest()">Скасувати</button>
+          <button type="submit" class="btn-primary">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Надіслати
+          </button>
+        </div>
+      </form>
+      <div class="suggest-success" id="suggestSuccess" style="display:none">
+        <div class="success-icon">✓</div>
+        <h3>Запит надіслано!</h3>
+        <p>Дякуємо! Ми розглянемо вашу пропозицію та додамо інструкцію для цієї камери.</p>
+        <button class="btn-primary" onclick="closeSuggest()" style="margin-top:24px;">Закрити</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="catalog-header">
+    <div class="catalog-header-bg"></div>
+    <div class="container">
+      <div class="section-label">База знань</div>
+      <h1>Каталог IP-камер Hikvision</h1>
+      <p>Виберіть модель, щоб переглянути покрокову інструкцію</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- FOCAL CALCULATOR -->
+    <div class="focal-calc">
+      <div class="focal-calc-header" onclick="toggleCalc()" style="cursor:pointer;">
+        <span class="focal-calc-title" id="calcToggleIcon">// Калькулятор фокусної відстані</span>
+      </div>
+      <div id="calcBody">
+        <p class="focal-calc-desc">Введіть відстань до об'єкту та потрібну ширину зони огляду — отримаєте рекомендовану фокусну відстань об'єктива</p>
+        <div class="focal-calc-body">
+          <div class="focal-field">
+            <label>Відстань до об'єкту (м)</label>
+            <input type="number" id="fc-distance" placeholder="10" min="0.1" step="0.1">
+          </div>
+          <div class="focal-field">
+            <label>Ширина зони огляду (м)</label>
+            <input type="number" id="fc-width" placeholder="6" min="0.1" step="0.1">
+          </div>
+          <div class="focal-field">
+            <label>Матриця камери</label>
+            <select id="fc-sensor">
+              <option value="4.8">1/3" (4.8 мм)</option>
+              <option value="6.4">1/2.7" (6.4 мм)</option>
+              <option value="8.0">1/2" (8.0 мм)</option>
+            </select>
+          </div>
+          <button class="focal-calc-btn" onclick="calcFocal()">Розрахувати →</button>
+        </div>
+        <div class="focal-result" id="focalResult" style="display:none">
+          <span class="focal-result-label">// РЕЗУЛЬТАТ</span>
+          <span class="focal-result-value" id="focalValue"></span>
+          <span class="focal-result-hint" id="focalHint"></span>
+        </div>
+      </div><!-- /calcBody -->
+    </div><!-- /focal-calc -->
+
+    <!-- LAYOUT: sidebar + grid -->
+    <div class="catalog-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="filter-sidebar">
+        <div class="filter-sidebar-header" onclick="toggleSidebar()" style="cursor:pointer;">
+          <span class="section-label sidebar-label" style="margin-bottom:0;" id="sidebarToggleIcon">// Фільтри</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="filterBadge" class="filter-badge" style="display:none;"></span>
+            <button id="resetBtn" class="filter-reset" onclick="event.stopPropagation();resetFilters()" style="display:none;">✕ Скинути</button>
+          </div>
+        </div>
+        <div id="sidebarBody">
+
+        <!-- Search -->
+        <div class="filter-search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Пошук за моделлю..." autocomplete="off">
+        </div>
+
+        <!-- Серія -->
+        <div class="filter-group">
+          <button class="filter-group-header" data-group="fg-series" onclick="toggleGroup('fg-series')">
+            <span>Серія</span><span class="fg-icon" style="transform:rotate(90deg)">›</span>
+          </button>
+          <div class="filter-group-body" id="fg-series">
+            <button class="filter-pill" data-filter-key="series" data-filter-value="AcuSense" onclick="setFilter('series','AcuSense')">AcuSense</button>
+            <button class="filter-pill" data-filter-key="series" data-filter-value="ColorVu" onclick="setFilter('series','ColorVu')">ColorVu</button>
+            <button class="filter-pill" data-filter-key="series" data-filter-value="EasyIP" onclick="setFilter('series','EasyIP')">EasyIP</button>
+            <button class="filter-pill" data-filter-key="series" data-filter-value="Wi-Fi" onclick="setFilter('series','Wi-Fi')">Wi-Fi</button>
+            <button class="filter-pill" data-filter-key="series" data-filter-value="DarkFighter" onclick="setFilter('series','DarkFighter')">DarkFighter</button>
+          </div>
+        </div>
+
+        <!-- Тип -->
+        <div class="filter-group">
+          <button class="filter-group-header" data-group="fg-type" onclick="toggleGroup('fg-type')">
+            <span>Тип камери</span><span class="fg-icon" style="transform:rotate(90deg)">›</span>
+          </button>
+          <div class="filter-group-body" id="fg-type">
+            <button class="filter-pill" data-filter-key="type" data-filter-value="Купольна" onclick="setFilter('type','Купольна')">Купольна</button>
+            <button class="filter-pill" data-filter-key="type" data-filter-value="Циліндрична" onclick="setFilter('type','Циліндрична')">Циліндрична</button>
+            <button class="filter-pill" data-filter-key="type" data-filter-value="Компактна" onclick="setFilter('type','Компактна')">Компактна</button>
+            <button class="filter-pill" data-filter-key="type" data-filter-value="PTZ" onclick="setFilter('type','PTZ')">PTZ</button>
+          </div>
+        </div>
+
+        <!-- Роздільна здатність -->
+        <div class="filter-group">
+          <button class="filter-group-header" data-group="fg-res" onclick="toggleGroup('fg-res')">
+            <span>Роздільна здатність</span><span class="fg-icon" style="transform:rotate(90deg)">›</span>
+          </button>
+          <div class="filter-group-body" id="fg-res">
+            <button class="filter-pill" data-filter-key="resolution" data-filter-value="2 МП" onclick="setFilter('resolution','2 МП')">2 МП</button>
+            <button class="filter-pill" data-filter-key="resolution" data-filter-value="4 МП" onclick="setFilter('resolution','4 МП')">4 МП</button>
+            <button class="filter-pill" data-filter-key="resolution" data-filter-value="8 МП" onclick="setFilter('resolution','8 МП')">8 МП</button>
+            <button class="filter-pill" data-filter-key="resolution" data-filter-value="12 МП" onclick="setFilter('resolution','12 МП')">12 МП</button>
+          </div>
+        </div>
+
+        <!-- Фокусна відстань -->
+        <div class="filter-group">
+          <button class="filter-group-header" data-group="fg-focal" onclick="toggleGroup('fg-focal')">
+            <span>Фокусна відстань</span><span class="fg-icon" style="transform:rotate(90deg)">›</span>
+          </button>
+          <div class="filter-group-body" id="fg-focal">
+            <button class="filter-pill" data-filter-key="focal" data-filter-value="2.8 мм" onclick="setFilter('focal','2.8 мм')">2.8 мм</button>
+            <button class="filter-pill" data-filter-key="focal" data-filter-value="4 мм" onclick="setFilter('focal','4 мм')">4 мм</button>
+            <button class="filter-pill" data-filter-key="focal" data-filter-value="6 мм" onclick="setFilter('focal','6 мм')">6 мм</button>
+            <button class="filter-pill" data-filter-key="focal" data-filter-value="2.8-12 мм" onclick="setFilter('focal','2.8-12 мм')">2.8–12 мм (варіо)</button>
+          </div>
+        </div>
+
+        <!-- Клас захисту -->
+        <div class="filter-group">
+          <button class="filter-group-header" data-group="fg-prot" onclick="toggleGroup('fg-prot')">
+            <span>Клас захисту</span><span class="fg-icon" style="transform:rotate(90deg)">›</span>
+          </button>
+          <div class="filter-group-body" id="fg-prot">
+            <button class="filter-pill" data-filter-key="protection" data-filter-value="IP67" onclick="setFilter('protection','IP67')">IP67</button>
+            <button class="filter-pill" data-filter-key="protection" data-filter-value="IP68" onclick="setFilter('protection','IP68')">IP68</button>
+            <button class="filter-pill" data-filter-key="protection" data-filter-value="IK10" onclick="setFilter('protection','IK10')">IK10</button>
+          </div>
+        </div>
+
+        <!-- Технологія -->
+        <div class="filter-group">
+          <button class="filter-group-header" data-group="fg-tech" onclick="toggleGroup('fg-tech')">
+            <span>Технологія</span><span class="fg-icon" style="transform:rotate(90deg)">›</span>
+          </button>
+          <div class="filter-group-body" id="fg-tech">
+            <button class="filter-pill" data-filter-key="technology" data-filter-value="AcuSense" onclick="setFilter('technology','AcuSense')">AcuSense</button>
+            <button class="filter-pill" data-filter-key="technology" data-filter-value="ColorVu" onclick="setFilter('technology','ColorVu')">ColorVu</button>
+            <button class="filter-pill" data-filter-key="technology" data-filter-value="DarkFighter" onclick="setFilter('technology','DarkFighter')">DarkFighter</button>
+            <button class="filter-pill" data-filter-key="technology" data-filter-value="Wi-Fi" onclick="setFilter('technology','Wi-Fi')">Wi-Fi</button>
+            <button class="filter-pill" data-filter-key="technology" data-filter-value="EasyIP" onclick="setFilter('technology','EasyIP')">EasyIP</button>
+          </div>
+        </div>
+      </div>
+      </aside>
+
+      <!-- MAIN GRID -->
+      <div class="catalog-main">
+        <div class="catalog-result-bar">
+          <span id="resultCount" class="result-count"></span>
+        </div>
+        <div class="catalog-grid" id="catalogGrid"></div>
+        <div class="no-results" id="noResults" style="display:none">
+          <div class="no-results-icon">⚠</div>
+          <p>// NOTHING FOUND — Спробуйте змінити запит або фільтри</p>
+        </div>
+      </div>
+
+    </div><!-- /.catalog-layout -->
+  </div><!-- /.container -->
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="index.html" class="footer-logo">
+        <span class="logo-hik">HIK</span><span class="logo-inst"> інструкції</span>
+      </a>
+      <span class="footer-copy">© 2026 Hikvision Інструкції · Viatec</span>
+      <div class="footer-status"><span class="status-dot"></span>SYSTEM ONLINE · v1.0.0</div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/suggest.js"></script>
+</body>
+</html>

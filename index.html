@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="images/cam_icon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hikvision Інструкції — IP-камери Українською</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-hik">HIK</span><span class="logo-sep">|</span><span class="logo-inst">інструкції</span>
+    </a>
+    <div class="nav-status">
+      <div class="nav-signal">
+        <span class="dot"></span>SYSTEM ONLINE
+      </div>
+    </div>
+   <button class="btn-suggest" onclick="openSuggest()">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+  <span class="btn-suggest-full">Запропонувати камеру</span>
+  <span class="btn-suggest-short">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    камеру
+  </span>
+</button>
+    <button class="burger" id="burgerBtn" aria-label="Меню"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Головна</a></li>
+      <li><a href="catalog.html">Каталог</a></li>
+      <li><a href="about.html">Про сайт</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-topbar">
+      <div class="modal-dots"><span></span><span></span><span></span></div>
+      <span class="modal-title">suggest_camera.exe</span>
+      <button class="modal-close" onclick="closeSuggest()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-header">
+        <div class="section-label" style="margin-bottom:10px;">Запит</div>
+        <h2>Запропонувати камеру</h2>
+        <p>Якої камери Hikvision не вистачає? Заповніть форму — ми розглянемо та додамо інструкцію.</p>
+      </div>
+      <form class="suggest-form" id="suggestForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="s-name">Ваше імʼя <span class="req">*</span></label>
+            <input type="text" id="s-name" placeholder="Тимофій" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="s-contact">Email <span class="req">*</span></label>
+            <input type="text" id="s-contact" placeholder="example@email.com" required autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="s-model">Модель камери <span class="req">*</span></label>
+          <input type="text" id="s-model" placeholder="DS-2CD2T47G2-L або інша" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="s-series">Серія</label>
+          <select id="s-series">
+            <option value="">— Оберіть серію —</option>
+            <option value="AcuSense">AcuSense</option>
+            <option value="ColorVu">ColorVu</option>
+            <option value="DarkFighter">DarkFighter</option>
+            <option value="EasyIP">EasyIP</option>
+            <option value="Інша">Інша</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="s-comment">Коментар</label>
+          <textarea id="s-comment" rows="3" placeholder="Чому ця камера важлива, де використовується..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" onclick="closeSuggest()">Скасувати</button>
+          <button type="submit" class="btn-primary">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Надіслати
+          </button>
+        </div>
+      </form>
+      <div class="suggest-success" id="suggestSuccess" style="display:none">
+        <div class="success-icon">✓</div>
+        <h3>Запит надіслано!</h3>
+        <p>Дякуємо! Ми розглянемо вашу пропозицію та додамо інструкцію для цієї камери.</p>
+        <button class="btn-primary" onclick="closeSuggest()" style="margin-top:24px;">Закрити</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <!-- BG photo placeholder -->
+    <div class="hero-bg-photo">
+      <div class="photo-placeholder">
+        <div class="ph-corner-tl"></div>
+        <div class="ph-corner-br"></div>
+      </div>
+    </div>
+
+    <div class="hero-grid"></div>
+    <div class="hero-deco-line hero-deco-line-1"></div>
+    <div class="hero-deco-line hero-deco-line-2"></div>
+    <div class="hero-deco-circle"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="blink"></span>
+        IP-камери Hikvision · Українською
+      </div>
+
+      <h1 class="hero-title">
+        Інтерактивні
+        <span class="line-red">покрокові</span>
+        <span class="line-dim">інструкції</span>
+      </h1>
+
+      <p class="hero-desc">
+        Монтаж і налаштування IP-камер Hikvision — зрозуміло для кожного.
+        Оберіть рівень: початківець або фахівець.
+      </p>
+
+      <div class="hero-actions">
+        <a href="catalog.html" class="btn-primary">Переглянути каталог →</a>
+        <a href="about.html" class="btn-outline">Про проект</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num">3<span>+</span></span>
+          <span class="hero-stat-label">Моделей камер</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">2</span>
+          <span class="hero-stat-label">Рівні складності</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">100<span>%</span></span>
+          <span class="hero-stat-label">Українською</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-panel">
+        <div class="panel-scan-line"></div>
+        <div class="panel-topbar">
+          <div class="panel-dots"><span></span><span></span><span></span></div>
+          <span class="panel-title">instruction_viewer.exe</span>
+        </div>
+        <!-- Camera illustration placeholder -->
+        <div class="hero-cam-placeholder">
+          <svg width="120" height="90" viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="20" width="80" height="50" rx="6" fill="#1C2029" stroke="rgba(232,0,29,0.4)" stroke-width="1.5"/>
+            <circle cx="50" cy="45" r="16" fill="#111318" stroke="rgba(232,0,29,0.5)" stroke-width="1.5"/>
+            <circle cx="50" cy="45" r="10" fill="#0A0C0F" stroke="rgba(232,0,29,0.3)" stroke-width="1"/>
+            <circle cx="50" cy="45" r="5" fill="rgba(232,0,29,0.2)"/>
+            <rect x="90" y="35" width="20" height="8" rx="3" fill="#1C2029" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <rect x="90" y="47" width="20" height="8" rx="3" fill="#1C2029" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="15" y1="68" x2="25" y2="68" stroke="rgba(232,0,29,0.5)" stroke-width="1.5"/>
+            <circle cx="30" cy="68" r="2" fill="rgba(0,200,117,0.8)"/>
+            <text x="82" y="78" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.2)">CAM</text>
+          </svg>
+        </div>
+        <div class="panel-steps">
+          <div class="panel-step"><div class="ps-num">01</div><div class="ps-text">Розпакування та перевірка комплекту</div></div>
+          <div class="panel-step"><div class="ps-num">02</div><div class="ps-text">Встановлення, кріплення та підключення кабелю</div></div>
+          <div class="panel-step active"><div class="ps-num">03</div><div class="ps-text">Активація та налаштування IP в SADP</div></div>
+          <div class="panel-step"><div class="ps-num">04</div><div class="ps-text">Налаштування веб-інтерфейсу камери</div></div>
+          <div class="panel-step"><div class="ps-num">05</div><div class="ps-text">Підключення до Hik-Connect</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="container">
+      
+      <!-- SOFTWARE CARDS -->
+      <div class="software-cards">
+        <div class="software-card">
+          <div class="software-card-left">
+            <div class="software-icon software-icon--blue">
+              <img src="images/logo_1631672248209.png" alt="SADP">
+            </div>
+            <div class="software-info">
+              <span class="software-label software-label--blue">// НЕОБХІДНИЙ СОФТ</span>
+              <h4>SADP Tool</h4>
+              <p>Безкоштовна утиліта для пошуку камер Hikvision у локальній мережі, активації пристроїв та первинного налаштування IP-адрес. Необхідна для першого запуску будь-якої камери.</p>
+            </div>
+          </div>
+          <a href="https://www.hikvision.com/en/support/download/sadp/" target="_blank" rel="noopener" class="software-btn software-btn--blue">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Завантажити
+          </a>
+        </div>
+
+        <div class="software-card">
+          <div class="software-card-left">
+            <div class="software-icon">
+              <img src="images/image_2026-05-07_22-16-51.png" alt="iVMS-4200">
+            </div>
+            <div class="software-info">
+              <span class="software-label">// ДОДАТКОВИЙ СОФТ</span>
+              <h4>iVMS-4200</h4>
+              <p>Безкоштовне ПЗ від Hikvision для перегляду в реальному часі з кількох камер одночасно, перегляду архіву, налаштування запису та управління системою відеоспостереження з ПК.</p>
+            </div>
+          </div>
+          <a href="https://www.hikvision.com/en/support/download/software/ivms4200-series/" target="_blank" rel="noopener" class="software-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Завантажити
+          </a>
+        </div>
+      </div>
+      <div class="section-header">
+        <div class="section-label">Переваги</div>
+        <h2 class="section-title">Чому цей сайт?</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-num">// 01</span>
+         <div class="feature-icon-wrap">
+            <img src="icons_svg/Tilda_Icons_43_logistics_stock.svg" alt="">
+          </div>
+          <h3>Два рівні складності</h3>
+          <p>Початківець отримає докладні пояснення. Фахівець — стислий технічний опис без зайвих слів.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-num">// 02</span>
+           <div class="feature-icon-wrap">
+            <img src="icons_svg/Tilda_Icons_1ed_list.svg" alt="">
+          </div>
+          <h3>Покрокові інструкції</h3>
+          <p>Кожен крок — текст та ілюстрація. Нічого зайвого, тільки суть. Навігація з клавіатури.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-num">// 03</span>
+          <div class="feature-icon-wrap">
+            <img src="icons_svg/Tilda_Icons_2web_magnifier.svg" alt="">
+          </div>
+          <h3>Зручний пошук</h3>
+          <p>Знайдіть потрібну модель за назвою або серією. Фільтрація в реальному часі.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-num">// 04</span>
+          <div class="feature-icon-wrap">
+            <img src="icons_svg/Tilda_Icons_9ta_phone.svg" alt="">
+          </div>
+          <h3>Мобільна версія</h3>
+          <p>Зручно читати прямо на об'єкті — зі смартфона або планшета без втрати функцій.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-num">// 05</span>
+           <div class="feature-icon-wrap">
+            <img src="icons_svg/Tilda_Icons_9ta_globe.svg" alt="">
+          </div>
+          <h3>Повністю українською</h3>
+          <p>Весь контент і інтерфейс — українською мовою. Для фахівців і для новачків.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-num">// 06</span>
+          <div class="feature-icon-wrap">
+            <img src="icons_svg/Tilda_Icons_40_IT_effective.svg" alt="">
+          </div>
+          <h3>Без реєстрації</h3>
+          <p>Жодних акаунтів і завантажень. Відкрив сайт — одразу до роботи. Без затримок.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+  <!-- Декоративні елементи -->
+  <div class="how-deco-line-left"></div>
+  <div class="how-deco-line-right"></div>
+  <div class="how-deco-circle"></div>
+    <div class="container">
+      <div class="how-grid">
+
+         <div class="how-photo">
+          <div class="video-wrap">
+            <iframe 
+              src="https://www.youtube.com/embed/ep8enngzn3E?si=5ZtWpi8P-S3VSI2c" 
+              title="YouTube video player" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <div class="how-steps">
+          <div class="section-label">Як це працює</div>
+          <div class="how-step">
+            <div class="hs-num">01</div>
+            <div class="hs-content">
+              <div class="hs-title">Оберіть модель камери</div>
+              <div class="hs-desc">Перейдіть до каталогу та знайдіть вашу модель за назвою або серією (AcuSense, ColorVu).</div>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="hs-num">02</div>
+            <div class="hs-content">
+              <div class="hs-title">Виберіть рівень складності</div>
+              <div class="hs-desc">Початківець отримає детальні пояснення кожного кроку. Фахівець — лаконічний технічний опис.</div>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="hs-num">03</div>
+            <div class="hs-content">
+              <div class="hs-title">Виконуйте крок за кроком</div>
+              <div class="hs-desc">Навігація кнопками або стрілками клавіатури. Кожен крок з ілюстрацією та прогрес-баром.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <!-- BG photo placeholder -->
+    <div class="cta-bg-photo">
+      <div class="photo-placeholder">
+        <div class="ph-corner-tl"></div>
+        <div class="ph-corner-br"></div>
+        <!-- bg image: dark server room, security equipment, etc. -->
+      </div>
+    </div>
+    <div class="cta-deco-left"></div>
+    <div class="cta-deco-right"></div>
+
+    <div class="container">
+      <div class="cta-content">
+        <div class="section-label" style="justify-content:center;">Готові розпочати</div>
+        <h2>Відкрийте <span>каталог</span><br>прямо зараз</h2>
+        <p>Оберіть модель камери і відкрийте покрокову інструкцію. Безкоштовно, без реєстрації.</p>
+        <div class="cta-actions">
+          <a href="catalog.html" class="btn-primary">Відкрити каталог →</a>
+          <a href="about.html" class="btn-outline">Докладніше</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="index.html" class="footer-logo">
+        <span class="logo-hik">HIK</span><span class="logo-inst"> інструкції</span>
+      </a>
+      <span class="footer-copy">© 2026 Hikvision Інструкції · Viatec</span>
+      <div class="footer-status">
+        <span class="status-dot"></span>
+        SYSTEM ONLINE · v1.0.0
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/suggest.js"></script>
+</body>
+</html>

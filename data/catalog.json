@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ds-2cd2383g2-li2u",
+    "name": "DS-2CD2383G2-LI2U",
+    "series": "AcuSense",
+    "type": "Купольна",
+    "resolution": "8 МП",
+    "focal": "2.8 мм",
+    "protection": "IP67 IK10",
+    "technology": "AcuSense",
+    "image": "images/2cd2143g2-li-s-2u.webp",
+    "shortDesc": "Купольна IP-камера 8 МП з технологією AcuSense, вбудованим мікрофоном і динаміком для двостороннього зв'язку"
+  },
+  {
+    "id": "ds-2cd1041g0-1",
+    "name": "DS-2CD1041G0-1",
+    "series": "EasyIP",
+    "type": "Циліндрична",
+    "resolution": "4 МП",
+    "focal": "2.8 мм",
+    "protection": "IP67",
+    "technology": "EasyIP",
+    "image": "images/DS-2CD1041G0-1.png",
+    "shortDesc": "Бюджетна циліндрична камера серії EasyIP 4 МП для зовнішнього встановлення з ІЧ-підсвічуванням до 30 м"
+  },
+  {
+    "id": "ds-2cd2421g0-iw",
+    "name": "DS-2CD2421G0-IW",
+    "series": "Wi-Fi",
+    "type": "Компактна",
+    "resolution": "2 МП",
+    "focal": "2.8 мм",
+    "protection": "IP67",
+    "technology": "Wi-Fi",
+    "image": "images/DS-2CD2421G0-IW.png",
+    "shortDesc": "Компактна Wi-Fi камера 2 МП для внутрішнього встановлення з вбудованим мікрофоном та підтримкою Hik-Connect"
+  }
+]
